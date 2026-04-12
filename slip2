@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<body>
+<form action="slip21.php" method="get">
+<center>
+<b>select font style:</b><input type=text name=s1><br>
+<b>Enter font size:</b><input type=text name=s><br>
+<b>Enter font color:</b><input type=text name=c><br>
+<b>Enter background color:</b><input type=text name=b><br>
+<input type=submit value="Next">
+</center>
+</form>
+</body>
+</html>
+
+<?php
+echo "Style is ".$_GET['s1']." Color is ".$_GET['c']." Background color is ".$_GET['b']." size is
+".$_GET['s'];
+setcookie("set1",$_GET['s1'],time()+3600);
+setcookie("set2",$_GET['c'],time()+3600);
+setcookie("set3",$_GET['b'],time()+3600);
+setcookie("set4",$_GET['s'],time()+3600);
+?>
+<a href="slip21.php"><br><br>Show</a>
+
+<?php
+$style=$_COOKIE['set1'];
+$color=$_COOKIE['set2'];
+$size=$_COOKIE['set4'];
+$b_color=$_COOKIE['set3'];
+$msg="Hello php";
+echo"<body bgcolor=$b_color>";
+echo"<font color=$color size=$size face=$style>$msg";
+echo"</font></body>";
+?>
