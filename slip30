@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bookstore>
+
+    <Category name="Yoga">
+        <Book>
+            <Book_Title>Yoga for Beginners</Book_Title>
+            <Book_Author>Ram Dev</Book_Author>
+            <Book_Price>300</Book_Price>
+        </Book>
+
+        <Book>
+            <Book_Title>Advanced Yoga</Book_Title>
+            <Book_Author>Sharma</Book_Author>
+            <Book_Price>450</Book_Price>
+        </Book>
+    </Category>
+
+    <Category name="Story">
+        <Book>
+            <Book_Title>Fairy Tales</Book_Title>
+            <Book_Author>Andersen</Book_Author>
+            <Book_Price>200</Book_Price>
+        </Book>
+
+        <Book>
+            <Book_Title>Panchtantra Stories</Book_Title>
+            <Book_Author>Vishnu Sharma</Book_Author>
+            <Book_Price>250</Book_Price>
+        </Book>
+    </Category>
+
+    <Category name="Technical">
+        <Book>
+            <Book_Title>Learn Java</Book_Title>
+            <Book_Author>James Gosling</Book_Author>
+            <Book_Price>500</Book_Price>
+        </Book>
+
+        <Book>
+            <Book_Title>Web Development</Book_Title>
+            <Book_Author>Tim Berners-Lee</Book_Author>
+            <Book_Price>600</Book_Price>
+        </Book>
+    </Category>
+
+</Bookstore>
+
+------------------------------------------------
+
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori, association_rules
+
+transactions = [
+    ['eggs', 'milk', 'bread'],
+    ['eggs', 'apple'],
+    ['milk', 'bread'],
+    ['apple', 'milk'],
+    ['milk', 'apple', 'bread']
+]
+
+te = TransactionEncoder()
+te_array = te.fit(transactions).transform(transactions)
+
+df = pd.DataFrame(te_array, columns=te.columns_)
+
+frequent_itemsets = apriori(df, min_support=0.4, use_colnames=True)
+
+rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.7)
+
+print("Frequent Itemsets:\n", frequent_itemsets)
+print("\nAssociation Rules:\n", rules)
+
+------
+
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori, association_rules
+
+transactions = [
+    ['eggs', 'milk', 'bread'],
+    ['eggs', 'apple'],
+    ['milk', 'bread'],
+    ['apple', 'milk'],
+    ['milk', 'apple', 'bread']
+]
+
+te = TransactionEncoder()
+te_array = te.fit(transactions).transform(transactions)
+
+df = pd.DataFrame(te_array, columns=te.columns_)
+
+print("One-hot Encoded Dataset:\n")
+print(df)
+
+frequent_itemsets = apriori(df, min_support=0.4, use_colnames=True)
+
+print("\nFrequent Itemsets:\n")
+print(frequent_itemsets)
+
+rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.7)
+
+print("\nAssociation Rules:\n")
+print(rules)
