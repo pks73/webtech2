@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Voter Registration</h2>
+
+Name: <input type="text" id="name"><br><br>
+Age: <input type="text" id="age"><br><br>
+Nationality: <input type="text" id="nation"><br><br>
+
+<button onclick="validate()">Submit</button>
+
+<div id="result"></div>
+
+<script>
+function validate() {
+
+    let name = document.getElementById("name").value;
+    let age = document.getElementById("age").value;
+    let nation = document.getElementById("nation").value;
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.onload = function () {
+        document.getElementById("result").innerHTML = this.responseText;
+    };
+
+    xhr.open("GET",
+        "S27.php?name=" + name +
+        "&age=" + age +
+        "&nation=" + nation,
+        true
+    );
+
+    xhr.send();
+}
+</script>
+
+</body>
+</html>
+
+<?php
+
+$name = $_GET['name'];
+$age = $_GET['age'];
+$nation = $_GET['nation'];
+
+if ($name == "" || $age == "" || $nation == "") {
+    echo "All fields are required";
+    exit;
+}
+
+if ($name != strtoupper($name)) {
+    echo "Name must be in UPPERCASE";
+    exit;
+}
+
+if (!is_numeric($age) || $age < 18) {
+    echo "Age must be 18 or above";
+    exit;
+}
+
+if (strtolower($nation) != "indian") {
+    echo "Nationality must be Indian";
+    exit;
+}
+
+echo "Voter is VALID ✔ Eligible for voting";
+
+?>
+
+-----------------------------------------
+
+import random
+import csv
+import pandas as pd
+
+transactions = []
+
+for i in range(1, 101):
+    transaction_id = i
+    transaction_date = f"2022-05-{random.randint(1, 31):02d}"
+    customer_id = random.randint(1, 10)
+    item_id = random.choice(["A", "B", "C"])
+    item_price = round(random.uniform(10.0, 100.0), 2)
+    quantity = random.randint(1, 10)
+
+    transactions.append([
+        transaction_id,
+        transaction_date,
+        customer_id,
+        item_id,
+        item_price,
+        quantity
+    ])
+
+with open('transactions.csv', 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow([
+        "Transaction ID",
+        "Transaction Date",
+        "Customer ID",
+        "Item ID",
+        "Item Price",
+        "Quantity"
+    ])
+
+    for transaction in transactions:
+        writer.writerow(transaction)
+
+df = pd.read_csv('transactions.csv')
+
+df['Item Price'] = pd.to_numeric(df['Item Price'])
+
+df['Sales'] = df['Item Price'] * df['Quantity']
+
+total_sales = df.groupby('Customer ID')['Sales'].sum().reset_index()
+
+print(total_sales)
+
+---------------
+
+import pandas as pd
+
+data = {
+    "Transaction ID": [1, 2, 3, 4, 5, 6, 7, 8],
+    "Transaction Date": ["2024-01-01", "2024-01-02", "2024-01-03", "2024-01-04",
+                         "2024-01-05", "2024-01-06", "2024-01-07", "2024-01-08"],
+    "Customer ID": [101, 102, 101, 103, 104, 102, 105, 101],
+    "Item ID": ["A", "B", "A", "C", "B", "A", "C", "B"],
+    "Item Price": [50, 30, 50, 70, 30, 50, 70, 30],
+    "Quantity": [2, 1, 3, 2, 5, 2, 1, 4]
+}
+
+df = pd.DataFrame(data)
+
+df["Item Price"] = pd.to_numeric(df["Item Price"])
+
+df["Sales"] = df["Item Price"] * df["Quantity"]
+
+total_sales = df.groupby("Customer ID")["Sales"].sum().reset_index()
+
+print(df)
+print("\nTotal Sales by Customer:\n")
+print(total_sales)
