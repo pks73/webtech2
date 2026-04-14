@@ -1,0 +1,69 @@
+<?php
+session_start();
+$correctUsername = "admin";
+$correctPassword = "admin";
+if (!isset($_SESSION['login_attempts']))
+{
+$_SESSION['login_attempts'] = 0;
+}
+if ($_SERVER['REQUEST_METHOD'] === 'POST')
+{
+$_SESSION['login_attempts']++;
+$enteredUsername = $_POST['username'];
+$enteredPassword = $_POST['password'];
+if ($enteredUsername === $correctUsername && $enteredPassword === $correctPassword)
+{
+unset($_SESSION['login_attempts']);
+header("Location: slip31.php");
+exit();
+}
+elseif ($_SESSION['login_attempts'] >= 3)
+{
+unset($_SESSION['login_attempts']);
+session_destroy();
+exit();
+}
+}
+?>
+<form method="post" action="">
+<label for="username">Username:</label>
+<input type="text" name="username" required><br>
+<label for="password">Password:</label>
+<input type="password" name="password" required><br>
+<input type="submit" value="Login">
+</form>
+<?php if ($_SESSION['login_attempts'] > 0 && $_SESSION['login_attempts'] < 3): ?>
+<p>Remaining login attempts: <?php echo 3 - $_SESSION['login_attempts']; ?></p>
+<?php endif; ?>
+
+<?php
+echo "Welcome to my web page!";
+?>
+
+---------------------------------------------------------------------------------------------
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report
+import pandas as pd
+df = pd.read_csv('./csv/User_Data.csv')
+# Perform one-hot encoding on the 'Gender' column
+df = pd.get_dummies(df, columns=['Gender'], drop_first=True)
+X = df[['Gender_Male', 'Age', 'EstimatedSalary']]
+y = df['Purchased']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=15)
+model = LogisticRegression(max_iter=1000)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+df
+def predict_purchase(gender, age, salary, model):
+gender_num = 1 if gender.lower() == 'male' else 0
+input_data = pd.DataFrame([[gender_num, age, salary]], columns=['Gender_Male', 'Age',
+'EstimatedSalary'])
+prediction = model.predict(input_data)
+return "Will Purchase a car" if prediction[0] == 1 else "Will Not Purchase a car"
+gender = "Male"
+age = 42
+salary = 149000
+result = predict_purchase(gender, age, salary, model)
+print(result)
