@@ -1,0 +1,92 @@
+contact.dat
+1,virat,02224567890,9876543210,Mumbai
+2,rohit,01122334455,9123456780,Delhi
+3,dhobi,0657223344,9988776655,Ranchi
+
+
+contact.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact List</title>
+    <script>
+        function loadContacts() {
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("result").innerHTML = this.responseText;
+                }
+            };
+
+            xhttp.open("GET", "read.php", true);
+            xhttp.send();
+        }
+    </script>
+</head>
+<body>
+
+<h2>Contact Details</h2>
+
+<button onclick="loadContacts()">Print</button>
+
+<div id="result"></div>
+
+</body>
+</html>
+
+read.php
+<?php
+$file = fopen("contact.dat", "r");
+
+echo "<table border='1'>";
+echo "<tr>
+        <th>Sr No</th>
+        <th>Name</th>
+        <th>Residence No</th>
+        <th>Mobile No</th>
+        <th>Address</th>
+      </tr>";
+
+while(($line = fgets($file)) !== false)
+{
+    $data = explode(",", $line);
+    echo "<tr>";
+    foreach($data as $value)
+    {
+        echo "<td>" . trim($value) . "</td>";
+    }
+    echo "</tr>";
+}
+
+echo "</table>";
+
+fclose($file);
+?>
+
+---------------------------------------------------------------
+
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+num_samples = 1000
+heights = np.random.normal(170, 10, num_samples)
+weights = 0.5 * heights + 30 + np.random.normal(0, 5, num_samples)
+data = pd.DataFrame({'Height': heights, 'Weight': weights})
+X = data[['Height']]
+y = data['Weight']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+model = LinearRegression()
+model.fit(X_train, y_train)
+train_rmse = np.sqrt(mean_squared_error(y_train, model.predict(X_train)))
+test_rmse = np.sqrt(mean_squared_error(y_test, model.predict(X_test)))
+print("Training RMSE:", train_rmse)
+print("Testing RMSE:", test_rmse)
+plt.scatter(X_test, y_test, color = 'green')
+plt.plot(X_train, model.predict(X_train), color='red',linewidth=3)
+plt.title('Regression(Height Weight)')
+plt.xlabel('Height')
+plt.ylabel('Weight')
+plt.show()
