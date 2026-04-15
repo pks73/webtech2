@@ -21,7 +21,7 @@ setcookie("set2",$_GET['c'],time()+3600);
 setcookie("set3",$_GET['b'],time()+3600);
 setcookie("set4",$_GET['s'],time()+3600);
 ?>
-<a href="slip21.php"><br><br>Show</a>
+<a href="slip212.php"><br><br>Show</a>
 
 <?php
 $style=$_COOKIE['set1'];
